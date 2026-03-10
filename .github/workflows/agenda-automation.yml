@@ -1,0 +1,35 @@
+name: Integración Continua de Agenda
+
+# Definir el evento: se activa con cada push 
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    # Personalización con Variables de entorno 
+    env:
+      USER_NAME: "Rogelio Rojas Santos"
+      STUDENT_NAME: "Rogelio Rojas Santos"
+
+    steps:
+    - name: Clonar el repositorio
+      uses: actions/checkout@v4
+
+    # Configuración del entorno e instalación del JDK con caché
+    - name: Configurar Java Development Kit (JDK) 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven 
+
+    # Uso de la variable de entorno para el registro (log)
+    - name: Mensaje de inicio
+      run: echo "Iniciando pruebas de la agenda de $USER_NAME"
+
+    # Compilación y prueba asegurando que los cambios no rompan funciones
+    - name: Compilar y ejecutar pruebas
+      run: mvn -B test
